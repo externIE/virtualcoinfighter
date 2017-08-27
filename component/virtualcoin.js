@@ -1,15 +1,18 @@
 var virtualcoin = {
-    template: '<div><div v-bind:style="netstatusstyle"><center><h3>{{ netstatus }}</h3></center></div><h2>{{ vctype }}</h2><p>开盘价：{{open}}</p><p>收盘价：{{close}}</p><p>最高价：{{high}}</p><p>最低价：{{low}}</p><p>交易量：{{amount}}</p></div>',
+    template: '<div><div v-bind:style="netstatusstyle"><center><h3>{{ netstatus }}</h3></center></div><h2>{{ vctype }} {{ period }}</h2><p>开盘价：{{open}}</p><p>收盘价：{{close}}</p><p>最高价：{{high}}</p><p>最低价：{{low}}</p><p>交易量：{{amount}}</p><p>交易笔数：{{count}}</p><trade :currentprice="currentprice"></trade></div>',
     data: function () {
       return {
           netstatus: "努力连接中...",
           netstatusstyle: {background: "yellow"},
           vctype: "",
+          period: "",
           open:0,
           close:0,
           high:0,
           low:0,
-          amount:0
+          amount:0,
+          count:0,
+          currentprice:0,
       }
     },
     mounted:function(){
@@ -21,6 +24,7 @@ var virtualcoin = {
         lykObj.onconnectok = this.onConnectOK
         lykObj.onreconnecting = this.onReconnecting
         this.vctype = lykObj.getSymbol()
+        this.period = "("+lykObj.getPeriod()+")"
     },
     methods: {
         onBCCCNYNotify:function(tick){
@@ -31,6 +35,9 @@ var virtualcoin = {
             this.high = tick.high
             this.low = tick.low
             this.amount = tick.amount
+            this.count = tick.count
+            this.$emit("oncurrentprice", {symbol: this.vctype, price: this.close})
+            this.currentprice = this.close
         },
         onConnenctClose:function(){
             this.netstatusstyle.background = "red"

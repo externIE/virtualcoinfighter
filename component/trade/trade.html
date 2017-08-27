@@ -1,0 +1,13 @@
+<div>
+    <div>
+        价格：<input v-model="price">
+        数量：<input v-model="amount">
+        <input type="button" @click="onsure" value="确定"></button>
+    </div>
+    <div>
+        <transaction v-for="item in transactions" :key="item.id" :price="item.price" :amount="item.amount" :currentprice="currentprice"></transaction>
+    </div>
+    <div>
+        总币数：{{totalamount}} 总赢亏：{{totaldcny}} 总资产：{{totalasset}}
+    </div>
+</div>

@@ -1,7 +1,7 @@
+var titlemap = {}
 var vm = new Vue({
     el: '#app',
     data: {
-        title: "标题啊",
         vc1: {symbol: "bcccny", topictype: "kline", period:"1min"},
         vc2: {symbol: "btccny", topictype: "kline", period:"1min"}
     },
@@ -11,10 +11,20 @@ var vm = new Vue({
         // lykObj.onNotify = this.onBCCCNYNotify
     },
     methods: {
-        onBCCCNYNotify:function(tick){
-            console.log("@@@@vue:onBCCCNYNotify")
-            console.log(tick)
-            this.title = tick.open
+        onCurrentPrice: function(params){
+            params = this.parseSymbolAndPrice(params)
+            titlemap[params.symbol] = params.price
+            this.updateDOMTitle()
+        },
+        parseSymbolAndPrice: function(params){
+            params.symbol = params.symbol.replace("cny", "")
+            return params
+        },
+        updateDOMTitle: function(){
+            document.title = ""
+            for( var key in titlemap ){
+                document.title += key.toUpperCase() + ":" + Math.round(titlemap[key]) + "|"
+            }
         }
     }
 })

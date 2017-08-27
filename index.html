@@ -10,15 +10,18 @@
     </head>
     <body>
         <div id="app">
-            <virtualcoin :params="vc1"></virtualcoin>
-            <virtualcoin :params="vc2"></virtualcoin>
+            <virtualcoin :params="vc1" @oncurrentprice="onCurrentPrice"></virtualcoin>
+            <virtualcoin :params="vc2" @oncurrentprice="onCurrentPrice"></virtualcoin>
         </div>
     </body>
     <footer>
         <script>
             
         </script>
+        
         <script src="./component/virtualcoin.js"></script>
+        <script src="./component/trade/trade.js"></script>
+        <script src="./component/trade/transaction/transaction.js"></script>
         <script src="./index.js"></script>
     </footer>
 </html>
